@@ -11,6 +11,7 @@ public class Wydarzenie {
     private String opis;
     private OffsetDateTime dataRozpoczecia;
     private OffsetDateTime dataZakonczenia;
+    private Long idOrganizatora;
     private Long idMiejsca;
     private Integer idKategorii;
     private StatusWydarzenia status;

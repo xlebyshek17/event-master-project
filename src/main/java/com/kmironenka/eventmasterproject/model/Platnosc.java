@@ -10,7 +10,7 @@ public class Platnosc {
     private Long idRezerwacji;
     private Double kwota;
     private String metodaPlatnosci;
-    private StatusRezerwacji status;
+    private StatusPlatnosci status;
     private Integer idTranzakcjiZewnetrznej;
     private OffsetDateTime dataPlatnosci;
 }
