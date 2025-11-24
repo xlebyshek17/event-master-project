@@ -1,22 +1,23 @@
 package com.kmironenka.eventmasterproject.model;
 
-public enum StatusRezerwacji {
-    OCZEKUJACA("Oczekujaca"),
-    ZATWIERDZONA("Zatwierdzona"),
-    ANULOWANA("Anulowana");
+public enum EventStatus {
+    SZKIC("Szkic"),
+    OPUBLIKOWANE("Opublikowane"),
+    ANULOWANE("Anulowane");
 
     private final String nazwaWBazie;
 
-    StatusRezerwacji(String nazwaWBaze) {
-        this.nazwaWBazie = nazwaWBaze;
+    EventStatus(String nazwaWBazie) {
+        this.nazwaWBazie = nazwaWBazie;
     }
 
     public String getNazwaWBazie() {
         return nazwaWBazie;
     }
 
-    public static StatusRezerwacji fromString(String tekst) {
-        for (StatusRezerwacji status : StatusRezerwacji.values()) {
+    // Metoda pomocnicza: Zamienia napis z bazy na Enum
+    public static EventStatus fromString(String tekst) {
+        for (EventStatus status : EventStatus.values()) {
             if (status.nazwaWBazie.equalsIgnoreCase(tekst)) {
                 return status;
             }

@@ -1,13 +1,13 @@
 package com.kmironenka.eventmasterproject.model;
 
-public enum StatusPlatnosci {
+public enum PaymentStatus {
         OCZEKUJACA("Oczekujaca"),
         ZAKONCZONA("Zakonczona"),
         BLAD("Blad");
 
     private String nazwaWBazie;
 
-    StatusPlatnosci(String nazwaWBazie) {
+    PaymentStatus(String nazwaWBazie) {
         this.nazwaWBazie = nazwaWBazie;
     }
 
@@ -15,8 +15,8 @@ public enum StatusPlatnosci {
         return nazwaWBazie;
     }
 
-    public static StatusPlatnosci fromString(String tekst) {
-        for (StatusPlatnosci status : StatusPlatnosci.values()) {
+    public static PaymentStatus fromString(String tekst) {
+        for (PaymentStatus status : PaymentStatus.values()) {
             if (status.nazwaWBazie.equalsIgnoreCase(tekst)) {
                 return status;
             }
