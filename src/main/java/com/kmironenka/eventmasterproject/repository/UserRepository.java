@@ -37,7 +37,7 @@ public class UserRepository {
                     "values (?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, u.getEmail(),
                                         u.getLogin(),
-                                        u.getPaswwordHash(),
+                                        u.getPasswordHash(),
                                         u.getName(),
                                         u.getSurname(),
                                         u.getCreatedAt());
@@ -49,7 +49,7 @@ public class UserRepository {
 
         return jdbcTemplate.update(sql, u.getEmail(),
                                         u.getLogin(),
-                                        u.getPaswwordHash(),
+                                        u.getPasswordHash(),
                                         u.getName(),
                                         u.getSurname(),
                                         u.getUserId());
