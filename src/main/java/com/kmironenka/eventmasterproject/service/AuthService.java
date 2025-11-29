@@ -1,8 +1,9 @@
 package com.kmironenka.eventmasterproject.service;
 
+import com.kmironenka.eventmasterproject.dto.UserDTO;
 import com.kmironenka.eventmasterproject.model.User;
-import com.kmironenka.eventmasterproject.repository.LoginDTO;
-import com.kmironenka.eventmasterproject.repository.RegisterDTO;
+import com.kmironenka.eventmasterproject.dto.LoginDTO;
+import com.kmironenka.eventmasterproject.dto.RegisterDTO;
 import com.kmironenka.eventmasterproject.repository.RoleRepository;
 import com.kmironenka.eventmasterproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -50,13 +51,22 @@ public class AuthService {
     }
 
     @Transactional
-    public User login(LoginDTO dto) {
+    public UserDTO login(LoginDTO dto) {
         User u = userRepo.getByLogin(dto.getLogin()).orElseThrow(() -> new IllegalArgumentException("Błędny login"));
+
 
         if (!BCrypt.checkpw(dto.getPassword(), u.getPasswordHash())) {
             throw new IllegalArgumentException("Błędne hasło");
         }
 
-        return u;
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(u.getUserId());
+        userDTO.setEmail(u.getEmail());
+        userDTO.setLogin(u.getLogin());
+        userDTO.setName(u.getName());
+        userDTO.setSurname(u.getSurname());
+        userDTO.setRole(userRepo.getUserRoleName(u.getUserId()));
+
+        return userDTO;
     }
 }

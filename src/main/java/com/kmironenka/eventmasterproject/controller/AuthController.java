@@ -1,8 +1,8 @@
 package com.kmironenka.eventmasterproject.controller;
 
-import com.kmironenka.eventmasterproject.model.User;
-import com.kmironenka.eventmasterproject.repository.LoginDTO;
-import com.kmironenka.eventmasterproject.repository.RegisterDTO;
+import com.kmironenka.eventmasterproject.dto.UserDTO;
+import com.kmironenka.eventmasterproject.dto.LoginDTO;
+import com.kmironenka.eventmasterproject.dto.RegisterDTO;
 import com.kmironenka.eventmasterproject.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +26,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginDTO dto) {
-        User u = authService.login(dto);
+    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO dto) {
+        UserDTO u = authService.login(dto);
 
         return ResponseEntity.ok(u);
     }

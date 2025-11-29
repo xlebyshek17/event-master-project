@@ -1,4 +1,4 @@
-package com.kmironenka.eventmasterproject.repository;
+package com.kmironenka.eventmasterproject.dto;
 
 import lombok.Data;
 

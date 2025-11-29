@@ -2,7 +2,6 @@ package com.kmironenka.eventmasterproject.repository;
 
 import com.kmironenka.eventmasterproject.mapper.UserRowMapper;
 import com.kmironenka.eventmasterproject.model.User;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -28,13 +27,9 @@ public class UserRepository {
         return jdbcTemplate.query(sql, new UserRowMapper());
     }
 
-    public User getById(Integer userId) {
+    public Optional<User> getById(Long userId) {
         String sql = "select * from uzytkownicy where id_uzytkownika = ?";
-        try {
-            return jdbcTemplate.queryForObject(sql, new UserRowMapper(), userId);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+        return jdbcTemplate.query(sql, new UserRowMapper(), userId).stream().findFirst();
     }
 
     public Optional<User> getByLogin(String login) {
@@ -68,11 +63,11 @@ public class UserRepository {
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    public int updateUser(User u) {
+    public void updateUser(User u) {
         String sql = "update uzytkownicy set email = ?, login = ?, haslo_hash = ?, imie = ?, nazwisko = ? " +
                 " where id_uzytkownika = ?";
 
-        return jdbcTemplate.update(sql, u.getEmail(),
+        jdbcTemplate.update(sql, u.getEmail(),
                                         u.getLogin(),
                                         u.getPasswordHash(),
                                         u.getName(),
@@ -80,14 +75,23 @@ public class UserRepository {
                                         u.getUserId());
     }
 
-    public int deleteUser(Long userId) {
+    public void deleteUser(Long userId) {
         String sql = "delete from uzytkownicy where id_uzytkownika = ?";
 
-        return jdbcTemplate.update(sql, userId);
+        jdbcTemplate.update(sql, userId);
     }
 
     public void setRoleToUser(Long userId, Integer roleId) {
         String sql = "insert into uzytkownicy_role (id_uzytkownika, id_roli) values (?, ?)";
         jdbcTemplate.update(sql, userId, roleId);
+    }
+
+    public String getUserRoleName(Long userId) {
+        String sql = "select r.nazwa_roli " +
+                "from role r " +
+                "join uzytkownicy_role ur " +
+                "on r.id_roli = ur.id_roli " +
+                "where ur.id_uzytkownika = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, userId);
     }
 }
