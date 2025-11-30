@@ -5,10 +5,8 @@ import com.kmironenka.eventmasterproject.model.User;
 import com.kmironenka.eventmasterproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {

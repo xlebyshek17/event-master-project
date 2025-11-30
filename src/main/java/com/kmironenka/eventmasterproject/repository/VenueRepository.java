@@ -32,25 +32,25 @@ public class VenueRepository {
         return jdbcTemplate.query(sql, new VenueRowMapper(), id).stream().findFirst();
     }
 
-    public int addVenue(Venue venue) {
+    public void addVenue(Venue venue) {
         String sql = "insert into miejsca(nazwa, adres, miasto, pojemnosc) values(?,?,?,?)";
-        return jdbcTemplate.update(sql, venue.getName(),
-                                        venue.getAddress(),
-                                        venue.getCity(),
-                                        venue.getCapacity());
+        jdbcTemplate.update(sql, venue.getName(),
+                                venue.getAddress(),
+                                venue.getCity(),
+                                venue.getCapacity());
     }
 
-    public int updateVenue(Venue venue) {
+    public void updateVenue(Venue venue) {
         String sql = "update miejsca set nazwa = ?, adres = ?, miasto = ?, pojemnosc = ? where id_miejsca = ?";
-        return jdbcTemplate.update(sql, venue.getName(),
-                                        venue.getAddress(),
-                                        venue.getCity(),
-                                        venue.getCapacity(),
-                                        venue.getVenueId());
+        jdbcTemplate.update(sql, venue.getName(),
+                                venue.getAddress(),
+                                venue.getCity(),
+                                venue.getCapacity(),
+                                venue.getVenueId());
     }
 
-    public int deleteVenue(Long id) {
+    public void deleteVenue(Long id) {
         String sql = "delete from miejsca where id_miejsca = ?";
-        return jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(sql, id);
     }
 }
