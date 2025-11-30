@@ -1,22 +1,19 @@
-package com.kmironenka.eventmasterproject.model;
+package com.kmironenka.eventmasterproject.dto;
 
+import com.kmironenka.eventmasterproject.model.EventStatus;
 import lombok.Data;
 
 import java.time.OffsetDateTime;
 
 @Data
-public class Event {
+public class EventDTO {
     private Long eventId;
     private String title;
     private String description;
     private OffsetDateTime startTime;
     private OffsetDateTime endTime;
-    private Long organizerId;
-    private Long venueId;
-    private Integer categoryId;
-    private EventStatus status;
-
+    private String organizerName;
     private String venueName;
     private String categoryName;
-    private String organizerName;
+    private EventStatus status;
 }
