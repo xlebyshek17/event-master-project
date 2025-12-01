@@ -12,7 +12,6 @@ public class EventCreateDTO {
     private String description;
     private OffsetDateTime startTime;
     private OffsetDateTime endTime;
-    private Long organizerId;
     private Long venueId;
     private Integer categoryId;
     private EventStatus status;

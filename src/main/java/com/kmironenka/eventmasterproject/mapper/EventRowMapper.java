@@ -21,7 +21,11 @@ public class EventRowMapper implements RowMapper<Event> {
         w.setOrganizerId(rs.getLong("id_organizatora"));
         w.setVenueId(rs.getLong("id_miejsca"));
         w.setCategoryId(rs.getInt("id_kategorii"));
-        w.setStatus(rs.getObject("status", EventStatus.class));
+
+        String eventStatus = rs.getString("status");
+        if (eventStatus != null) {
+            w.setStatus(EventStatus.fromString(eventStatus));
+        }
 
         try {
             w.setVenueName(rs.getString("nazwa_miejsca"));         // Musi pasować do AS nazwa_miejsca

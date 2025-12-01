@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,18 +22,18 @@ public class EventRepository {
     }
 
     private final String SELECT_WITH_JOINS = """
-        SELECT e.*,
+        SELECT w.*,
                m.nazwa AS nazwa_miejsca, 
                k.nazwa AS nazwa_kategorii,
                o.nazwa_organizacji AS nazwa_organizatora
-        FROM wydarzenia e
-        LEFT JOIN miejsca m ON e.id_miejsca = m.id_miejsca
-        LEFT JOIN kategorie_wydarzen k ON e.id_kategorii = k.id_kategorii
-        LEFT JOIN organizatorzy o ON e.id_organizatora = o.id_organizatora
+        FROM wydarzenia w
+        LEFT JOIN miejsca m ON w.id_miejsca = m.id_miejsca
+        LEFT JOIN kategorie_wydarzen k ON w.id_kategorii = k.id_kategorii
+        LEFT JOIN organizatorzy o ON w.id_organizatora = o.id_organizatora
     """;
 
     public List<Event> getAll(Long orgId) {
-        String sql = SELECT_WITH_JOINS + " where e.id_organizatora = ?";
+        String sql = SELECT_WITH_JOINS + " where w.id_organizatora = ?";
         return jdbcTemplate.query(sql, new EventRowMapper(), orgId);
     }
 
@@ -52,7 +53,7 @@ public class EventRepository {
             ps.setLong(6, event.getVenueId());
             ps.setInt(7, event.getCategoryId());
             // Enum na Stringa
-            ps.setString(8, event.getStatus().toString());
+            ps.setString(8, event.getStatus().getNameInDB());
             return ps;
         }, keyHolder);
 
@@ -66,7 +67,7 @@ public class EventRepository {
 
         return jdbcTemplate.update(sql, event.getTitle(), event.getDescription(), event.getStartTime(),
                 event.getEndTime(), event.getOrganizerId(), event.getVenueId(),
-                event.getCategoryId(), event.getStatus(), event.getEventId(), event.getOrganizerId());
+                event.getCategoryId(), event.getStatus().getNameInDB(), event.getEventId(), event.getOrganizerId());
     }
 
     public int deleteEvent(Long eventId, Long organizerId) {
@@ -77,5 +78,12 @@ public class EventRepository {
     public Optional<Event> getEventById(Long eventId) {
         String sql = SELECT_WITH_JOINS + " where id_wydarzenia = ?";
         return jdbcTemplate.query(sql, new EventRowMapper(), eventId).stream().findFirst();
+    }
+
+    public boolean existsByDetails(String title, Long venueId, OffsetDateTime startTime) {
+        String sql = "select count(*) from wydarzenia where tytul = ? and id_miejsca = ? and data_rozpoczecia = ?";
+
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, title, venueId, startTime);
+        return count != null && count > 0;
     }
 }

@@ -35,6 +35,12 @@ public class OrganizerController {
         return ResponseEntity.ok("Profil organizatora zaktualizowany!");
     }
 
+    @GetMapping("/check-profile/{userdId}")
+    public ResponseEntity<String> hasProfile(@PathVariable Long userdId) {
+        boolean exists = organizerService.isProfileExists(userdId);
+        return ResponseEntity.ok(exists ? "Yes" : "No");
+    }
+
     @GetMapping("/{orgId}/events")
     public ResponseEntity<List<EventDTO>> getAllEvents(@PathVariable Long orgId) {
         List<EventDTO> events = eventService.getAllByOrganizer(orgId);
@@ -61,5 +67,11 @@ public class OrganizerController {
         eventService.deleteEvent(eventId, orgId);
 
         return ResponseEntity.ok("Event deleted!");
+    }
+
+    @GetMapping("/{orgId}/events/{eventId}")
+    public ResponseEntity<EventDTO> getEvent(@PathVariable Long eventId, @PathVariable Long orgId) {
+        EventDTO dto = eventService.getEvent(eventId, orgId);
+        return ResponseEntity.ok(dto);
     }
 }

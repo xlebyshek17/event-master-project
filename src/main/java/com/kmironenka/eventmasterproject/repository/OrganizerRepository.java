@@ -2,6 +2,7 @@ package com.kmironenka.eventmasterproject.repository;
 
 import com.kmironenka.eventmasterproject.mapper.OrganizerRowMapper;
 import com.kmironenka.eventmasterproject.model.Organizer;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,9 +21,14 @@ public class OrganizerRepository {
         jdbcTemplate.update(sql, o.getUserId(), o.getName(), o.getDescription(), o.getContactEmail());
     }
 
-    public Long getOrganizerIdByUserId(Long userId) {
+    public Optional<Long> getOrganizerIdByUserId(Long userId) {
         String sql = "select id_organizatora from organizatorzy where id_uzytkownika = ?";
-        return jdbcTemplate.queryForObject(sql, Long.class, userId);
+        try {
+            Long id = jdbcTemplate.queryForObject(sql, Long.class, userId);
+            return Optional.ofNullable(id);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public int updateOrganizer(Organizer o) {

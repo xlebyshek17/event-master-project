@@ -22,9 +22,12 @@ public class EventService {
     }
 
     public void addEvent(EventCreateDTO dto, Long organizerId) {
+        if (eventRepo.existsByDetails(dto.getTitle(), dto.getVenueId(), dto.getStartTime())) {
+            throw new IllegalArgumentException("Event already exists");
+        }
+
         Event event = new Event();
         mapFromDTO(dto, event);
-
         event.setOrganizerId(organizerId);
         event.setStatus(EventStatus.OPUBLIKOWANE);
 
@@ -53,8 +56,19 @@ public class EventService {
         }
     }
 
+    public EventDTO getEvent(Long eventId, Long orgId) {
+        Event event = eventRepo.getEventById(eventId).orElseThrow(() -> new IllegalArgumentException("Wydarzenie nie istnieje"));
+
+        if (!event.getOrganizerId().equals(orgId)) {
+            throw new IllegalArgumentException("Brak dostepu do tego wydarzenia");
+        }
+
+        return mapToDTO(event);
+    }
+
     private EventDTO mapToDTO(Event event) {
         EventDTO dto = new EventDTO();
+        dto.setEventId(event.getEventId());
         dto.setTitle(event.getTitle());
         dto.setDescription(event.getDescription());
         dto.setStartTime(event.getStartTime());

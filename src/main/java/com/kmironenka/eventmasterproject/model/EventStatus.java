@@ -5,20 +5,20 @@ public enum EventStatus {
     OPUBLIKOWANE("Opublikowane"),
     ANULOWANE("Anulowane");
 
-    private final String nazwaWBazie;
+    private final String nameInDB;
 
-    EventStatus(String nazwaWBazie) {
-        this.nazwaWBazie = nazwaWBazie;
+    EventStatus(String nameInDB) {
+        this.nameInDB = nameInDB;
     }
 
-    public String getNazwaWBazie() {
-        return nazwaWBazie;
+    public String getNameInDB() {
+        return nameInDB;
     }
 
     // Metoda pomocnicza: Zamienia napis z bazy na Enum
     public static EventStatus fromString(String tekst) {
         for (EventStatus status : EventStatus.values()) {
-            if (status.nazwaWBazie.equalsIgnoreCase(tekst)) {
+            if (status.nameInDB.equalsIgnoreCase(tekst)) {
                 return status;
             }
         }
