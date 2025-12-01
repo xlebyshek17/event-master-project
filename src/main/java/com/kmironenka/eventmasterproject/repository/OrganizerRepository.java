@@ -25,9 +25,9 @@ public class OrganizerRepository {
         return jdbcTemplate.queryForObject(sql, Long.class, userId);
     }
 
-    public void updateOrganizer(Organizer o) {
+    public int updateOrganizer(Organizer o) {
         String sql = "update organizatorzy set nazwa_organizacji = ?, opis = ?, email_kontaktowy = ? where id_organizatora = ?";
-        jdbcTemplate.update(sql, o.getName(), o.getDescription(), o.getContactEmail(), o.getOrganizerId());
+        return jdbcTemplate.update(sql, o.getName(), o.getDescription(), o.getContactEmail(), o.getOrganizerId());
     }
 
     public Optional<Organizer> getById(Long organizerId) {

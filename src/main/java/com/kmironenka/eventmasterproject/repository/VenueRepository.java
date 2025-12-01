@@ -1,6 +1,5 @@
 package com.kmironenka.eventmasterproject.repository;
 
-import com.kmironenka.eventmasterproject.dto.VenueDTO;
 import com.kmironenka.eventmasterproject.mapper.VenueRowMapper;
 import com.kmironenka.eventmasterproject.model.Venue;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -40,17 +39,17 @@ public class VenueRepository {
                                 venue.getCapacity());
     }
 
-    public void updateVenue(Venue venue) {
+    public int updateVenue(Venue venue) {
         String sql = "update miejsca set nazwa = ?, adres = ?, miasto = ?, pojemnosc = ? where id_miejsca = ?";
-        jdbcTemplate.update(sql, venue.getName(),
+        return jdbcTemplate.update(sql, venue.getName(),
                                 venue.getAddress(),
                                 venue.getCity(),
                                 venue.getCapacity(),
                                 venue.getVenueId());
     }
 
-    public void deleteVenue(Long id) {
+    public int deleteVenue(Long id) {
         String sql = "delete from miejsca where id_miejsca = ?";
-        jdbcTemplate.update(sql, id);
+        return jdbcTemplate.update(sql, id);
     }
 }

@@ -36,20 +36,24 @@ public class EventCategoryService {
     }
 
     public void deleteCategory(Integer id) {
-        EventCategory category = repo.getById(id).orElse(null);
-        if (category == null) {
+        int rowsAffected = repo.deleteEventCategory(id);
+
+        if (rowsAffected == 0) {
             throw new IllegalArgumentException("Event category does not exist");
         }
-        repo.deleteEventCategory(id);
     }
 
-    public void updateCategory(EventCategoryDTO dto) {
-        EventCategory category = repo.getById(dto.getId()).orElse(null);
-        if (category == null) {
+    public void updateCategory(EventCategoryDTO dto, Integer id) {
+        EventCategory category = new EventCategory();
+
+        category.setCategoryId(id);
+        category.setName(dto.getName());
+
+        int rowsAffected = repo.updateEventCategory(category);
+
+        if (rowsAffected == 0) {
             throw new IllegalArgumentException("Event category does not exist");
         }
-        category.setName(dto.getName());
-        repo.updateEventCategory(category);
     }
 
     private EventCategoryDTO mapToDTO(EventCategory e) {

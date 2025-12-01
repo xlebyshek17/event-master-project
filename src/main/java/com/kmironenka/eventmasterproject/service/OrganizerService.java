@@ -25,16 +25,17 @@ public class OrganizerService {
     }
 
     public void updateProfile(OrganizerProfileDTO dto, Long orgId) {
-        Organizer org = organizerRepo.getById(orgId).orElse(null);
+        Organizer org = new Organizer();
 
-        if (org == null) {
-            throw new IllegalArgumentException("Organizer with id " + orgId + " not found");
-        }
-
+        org.setOrganizerId(orgId);
         org.setName(dto.getOrganizerName());
         org.setDescription(dto.getDescription());
         org.setContactEmail(dto.getContactEmail());
 
-        organizerRepo.updateOrganizer(org);
+        int rowsAffected = organizerRepo.updateOrganizer(org);
+
+        if (rowsAffected == 0) {
+            throw new IllegalArgumentException("Organization does not exist!");
+        }
     }
 }

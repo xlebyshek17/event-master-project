@@ -29,35 +29,26 @@ public class VenueService {
             throw new IllegalArgumentException("Venue already exists");
         }
 
-        Venue venue = new Venue();
-        venue.setName(dto.getName());
-        venue.setAddress(dto.getAddress());
-        venue.setCity(dto.getCity());
-        venue.setCapacity(dto.getCapacity());
-
-        repo.addVenue(venue);
+        repo.addVenue(mapFromDTO(dto));
     }
 
-    public void updateVenue(VenueDTO dto) {
-        Venue venue = repo.getById(dto.getId()).orElse(null);
-        if (venue == null) {
+    public void updateVenue(VenueDTO dto, Long venueId) {
+        Venue venue = mapFromDTO(dto);
+        venue.setVenueId(venueId);
+
+        int rowsAffected = repo.updateVenue(venue);
+
+        if (rowsAffected == 0) {
             throw new IllegalArgumentException("Venue does not exist");
         }
-
-        venue.setName(dto.getName());
-        venue.setAddress(dto.getAddress());
-        venue.setCity(dto.getCity());
-        venue.setCapacity(dto.getCapacity());
-
-        repo.updateVenue(venue);
     }
 
     public void deleteVenue(Long id) {
-        Venue venue = repo.getById(id).orElse(null);
-        if (venue == null) {
+        int rowsAffected = repo.deleteVenue(id);
+
+        if (rowsAffected == 0) {
             throw new IllegalArgumentException("Venue does not exist");
         }
-        repo.deleteVenue(id);
     }
 
     private VenueDTO mapToDTO(Venue venue) {
@@ -68,5 +59,15 @@ public class VenueService {
         dto.setCity(venue.getCity());
         dto.setCapacity(venue.getCapacity());
         return dto;
+    }
+
+    private Venue mapFromDTO(VenueDTO dto) {
+        Venue venue = new Venue();
+        venue.setName(dto.getName());
+        venue.setAddress(dto.getAddress());
+        venue.setCity(dto.getCity());
+        venue.setCapacity(dto.getCapacity());
+
+        return venue;
     }
 }

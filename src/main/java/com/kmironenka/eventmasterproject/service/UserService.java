@@ -23,7 +23,11 @@ public class UserService {
     }
 
     public void deleteUser(Long userId) {
-        repo.deleteUser(userId);
+        int rowsAffected = repo.deleteUser(userId);
+
+        if (rowsAffected == 0) {
+            throw new IllegalArgumentException("User does not exist!");
+        }
     }
 
     public Optional<UserDTO> getUserById(Long userId) {

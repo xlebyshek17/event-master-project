@@ -62,9 +62,7 @@ public class AdminController {
 
     @PutMapping("/event-categories/{id}")
     public ResponseEntity<String> updateEventCategory(@PathVariable Integer id, @RequestBody EventCategoryDTO categoryDTO) {
-        categoryDTO.setId(id);
-
-        categoryService.updateCategory(categoryDTO);
+        categoryService.updateCategory(categoryDTO, id);
 
         return ResponseEntity.ok("Category updated successfully");
     }
@@ -103,8 +101,7 @@ public class AdminController {
 
     @PutMapping("/venues/{id}")
     public ResponseEntity<String> updateVenue(@PathVariable Long id, @RequestBody VenueDTO venueDTO) {
-        venueDTO.setId(id);
-        venueService.updateVenue(venueDTO);
+        venueService.updateVenue(venueDTO, id);
         return ResponseEntity.ok("Venue updated successfully");
     }
 

@@ -36,13 +36,13 @@ public class EventCategoryRepository {
         jdbcTemplate.update(sql, category.getName());
     }
 
-    public void updateEventCategory(EventCategory category) {
+    public int updateEventCategory(EventCategory category) {
         String sql = "update kategorie_wydarzen set nazwa = ? where id_kategorii = ?";
-        jdbcTemplate.update(sql, category.getName(), category.getCategoryId());
+        return jdbcTemplate.update(sql, category.getName(), category.getCategoryId());
     }
 
-    public void deleteEventCategory(Integer id) {
+    public int deleteEventCategory(Integer id) {
         String sql = "delete from kategorie_wydarzen where id_kategorii = ?";
-        jdbcTemplate.update(sql, id);
+        return jdbcTemplate.update(sql, id);
     }
 }

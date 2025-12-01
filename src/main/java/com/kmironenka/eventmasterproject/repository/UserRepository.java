@@ -63,11 +63,11 @@ public class UserRepository {
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    public void updateUser(User u) {
+    public int updateUser(User u) {
         String sql = "update uzytkownicy set email = ?, login = ?, haslo_hash = ?, imie = ?, nazwisko = ? " +
                 " where id_uzytkownika = ?";
 
-        jdbcTemplate.update(sql, u.getEmail(),
+        return jdbcTemplate.update(sql, u.getEmail(),
                                         u.getLogin(),
                                         u.getPasswordHash(),
                                         u.getName(),
@@ -75,10 +75,10 @@ public class UserRepository {
                                         u.getUserId());
     }
 
-    public void deleteUser(Long userId) {
+    public int deleteUser(Long userId) {
         String sql = "delete from uzytkownicy where id_uzytkownika = ?";
 
-        jdbcTemplate.update(sql, userId);
+        return jdbcTemplate.update(sql, userId);
     }
 
     public void setRoleToUser(Long userId, Integer roleId) {
