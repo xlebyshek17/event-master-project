@@ -1,5 +1,8 @@
 package com.kmironenka.eventmasterproject.model;
 
+import lombok.Getter;
+
+@Getter
 public enum EventStatus {
     SZKIC("Szkic"),
     OPUBLIKOWANE("Opublikowane"),
@@ -9,10 +12,6 @@ public enum EventStatus {
 
     EventStatus(String nameInDB) {
         this.nameInDB = nameInDB;
-    }
-
-    public String getNameInDB() {
-        return nameInDB;
     }
 
     // Metoda pomocnicza: Zamienia napis z bazy na Enum

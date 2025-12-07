@@ -1,15 +1,12 @@
-package com.kmironenka.eventmasterproject.model;
+package com.kmironenka.eventmasterproject.dto;
 
 import lombok.Data;
 
 @Data
-public class TicketType {
+public class TicketTypeCreateDTO {
     private Long ticketTypeId;
     private Long eventId;
     private String name;
     private Double price;
     private Integer totalQuantity;
-    private Integer availableQuantity;
-
-    private String eventTitle;
 }

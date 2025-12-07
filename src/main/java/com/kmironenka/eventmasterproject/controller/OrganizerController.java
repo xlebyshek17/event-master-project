@@ -1,10 +1,9 @@
 package com.kmironenka.eventmasterproject.controller;
 
-import com.kmironenka.eventmasterproject.dto.EventCreateDTO;
-import com.kmironenka.eventmasterproject.dto.EventDTO;
-import com.kmironenka.eventmasterproject.dto.OrganizerProfileDTO;
+import com.kmironenka.eventmasterproject.dto.*;
 import com.kmironenka.eventmasterproject.service.EventService;
 import com.kmironenka.eventmasterproject.service.OrganizerService;
+import com.kmironenka.eventmasterproject.service.TicketTypeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +14,12 @@ import java.util.List;
 public class OrganizerController {
     private final OrganizerService organizerService;
     private final EventService eventService;
+    private final TicketTypeService ticketTypeService;
 
-    public OrganizerController(OrganizerService organizerService, EventService eventService) {
+    public OrganizerController(OrganizerService organizerService, EventService eventService, TicketTypeService ticketTypeService) {
         this.organizerService = organizerService;
         this.eventService = eventService;
+        this.ticketTypeService = ticketTypeService;
     }
 
     @PostMapping("/profile/{userId}")
@@ -36,9 +37,9 @@ public class OrganizerController {
     }
 
     @GetMapping("/check-profile/{userdId}")
-    public ResponseEntity<String> hasProfile(@PathVariable Long userdId) {
+    public ResponseEntity<Boolean> hasProfile(@PathVariable Long userdId) {
         boolean exists = organizerService.isProfileExists(userdId);
-        return ResponseEntity.ok(exists ? "Yes" : "No");
+        return ResponseEntity.ok(exists);
     }
 
     @GetMapping("/{orgId}/events")
@@ -73,5 +74,37 @@ public class OrganizerController {
     public ResponseEntity<EventDTO> getEvent(@PathVariable Long eventId, @PathVariable Long orgId) {
         EventDTO dto = eventService.getEvent(eventId, orgId);
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/{orgId}/events/{eventId}/tickets")
+    public ResponseEntity<List<TicketTypeDTO>> getAllTickets(@PathVariable Long eventId, @PathVariable Long orgId) {
+        List<TicketTypeDTO> tickets = ticketTypeService.getAllByEvent(eventId, orgId);
+        return ResponseEntity.ok(tickets);
+    }
+
+    @PostMapping("/{orgId}/events/{eventId}/tickets")
+    public ResponseEntity<String> createTicket(@PathVariable Long orgId,
+                                               @PathVariable Long eventId,
+                                               @RequestBody TicketTypeCreateDTO dto) {
+        ticketTypeService.addTicketType(orgId, eventId, dto);
+
+        return ResponseEntity.ok("Ticket created!");
+    }
+
+    @PutMapping("/{orgId}/events/{eventId}/tickets/{ticketId}")
+    public ResponseEntity<String> updateTicket(@PathVariable Long orgId,
+                                               @PathVariable Long eventId,
+                                               @PathVariable Long ticketId,
+                                               @RequestBody TicketTypeCreateDTO dto) {
+        ticketTypeService.updateTicketType(orgId, eventId, ticketId, dto);
+        return ResponseEntity.ok("Ticket updated!");
+    }
+
+    @DeleteMapping("/{orgId}/events/{eventId}/tickets/{ticketId}")
+    public ResponseEntity<String> deleteTicket(@PathVariable Long orgId,
+                                               @PathVariable Long eventId,
+                                               @PathVariable Long ticketId) {
+        ticketTypeService.deleteTicketType(orgId, eventId, ticketId);
+        return ResponseEntity.ok("Ticket deleted!");
     }
 }

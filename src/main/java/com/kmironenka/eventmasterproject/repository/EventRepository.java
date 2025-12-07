@@ -86,4 +86,10 @@ public class EventRepository {
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, title, venueId, startTime);
         return count != null && count > 0;
     }
+
+    public boolean isEventOwner(Long eventId, Long organizerId) {
+        String sql = "select count(*) from wydarzenia where id_wydarzenia = ? and id_organizatora = ?";
+        Integer count =  jdbcTemplate.queryForObject(sql, Integer.class, eventId, organizerId);
+        return count != null && count > 0;
+    }
 }

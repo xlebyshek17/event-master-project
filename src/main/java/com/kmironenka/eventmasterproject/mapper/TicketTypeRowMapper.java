@@ -17,6 +17,12 @@ public class TicketTypeRowMapper implements RowMapper<TicketType> {
         tb.setTotalQuantity(rs.getInt("pula_calkowita"));
         tb.setAvailableQuantity(rs.getInt("ilosc_dostepna"));
 
+        try {
+            tb.setEventTitle(rs.getString("tytul_wydarzenia"));
+        } catch(SQLException e) {
+            //
+        }
+
         return tb;
     }
 }
