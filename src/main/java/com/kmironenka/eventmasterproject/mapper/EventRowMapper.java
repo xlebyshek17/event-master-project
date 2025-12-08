@@ -31,6 +31,8 @@ public class EventRowMapper implements RowMapper<Event> {
             w.setVenueName(rs.getString("nazwa_miejsca"));         // Musi pasować do AS nazwa_miejsca
             w.setCategoryName(rs.getString("nazwa_kategorii"));    // Musi pasować do AS nazwa_kategorii
             w.setOrganizerName(rs.getString("nazwa_organizatora"));// Musi pasować do AS nazwa_organizatora
+            w.setCity(rs.getString("miasto_miejsca"));
+            w.setMinPrice(rs.getDouble("cena_od"));
         } catch (SQLException e) {
             // Ignorujemy błąd, jeśli kolumny nie ma (np. w zapytaniu findById bez joinów)
             // Dzięki temu mapper jest uniwersalny!

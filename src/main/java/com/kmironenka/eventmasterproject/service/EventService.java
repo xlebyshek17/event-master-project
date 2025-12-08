@@ -21,6 +21,10 @@ public class EventService {
         return eventRepo.getAll(orgId).stream().map(this::mapToDTO).toList();
     }
 
+    public List<EventDTO> getPublishedEvents() {
+        return eventRepo.getPublishedEvents().stream().map(this::mapToDTO).toList();
+    }
+
     public void addEvent(EventCreateDTO dto, Long organizerId) {
         if (eventRepo.existsByDetails(dto.getTitle(), dto.getVenueId(), dto.getStartTime())) {
             throw new IllegalArgumentException("Event already exists");
@@ -66,6 +70,11 @@ public class EventService {
         return mapToDTO(event);
     }
 
+    public EventDTO getPublishedEvent(Long eventId) {
+        Event event = eventRepo.getPublishedEventById(eventId).orElseThrow(() -> new IllegalArgumentException("Wydarzenie nie istnieje"));
+        return mapToDTO(event);
+    }
+
     private EventDTO mapToDTO(Event event) {
         EventDTO dto = new EventDTO();
         dto.setEventId(event.getEventId());
@@ -78,6 +87,8 @@ public class EventService {
         dto.setVenueName(event.getVenueName());
         dto.setCategoryName(event.getCategoryName());
         dto.setStatus(event.getStatus());
+        dto.setCity(event.getCity());
+        dto.setMinPrice(event.getMinPrice());
 
         return dto;
     }
