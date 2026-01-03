@@ -15,6 +15,7 @@ public class Event {
     private Long venueId;
     private Integer categoryId;
     private EventStatus status;
+    private String imageUrl;
 
     private String venueName;
     private String city;

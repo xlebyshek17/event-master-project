@@ -46,8 +46,8 @@ public class EventRepository {
     }
 
     public Long addEvent(Event event) {
-        String sql = "INSERT INTO wydarzenia (tytul, opis, data_rozpoczecia, data_zakonczenia, id_organizatora, id_miejsca, id_kategorii, status) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO wydarzenia (tytul, opis, data_rozpoczecia, data_zakonczenia, id_organizatora, id_miejsca, id_kategorii, status, zdjecie_url) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -62,6 +62,7 @@ public class EventRepository {
             ps.setInt(7, event.getCategoryId());
             // Enum na Stringa
             ps.setString(8, event.getStatus().getNameInDB());
+            ps.setString(9, event.getImageUrl());
             return ps;
         }, keyHolder);
 
@@ -70,12 +71,12 @@ public class EventRepository {
 
     public int updateEvent(Event event) {
         String sql = "update wydarzenia set tytul = ?, opis = ?, data_rozpoczecia = ?," +
-                " data_zakonczenia = ?, id_organizatora = ?, id_miejsca = ?, id_kategorii = ?, status = ?" +
+                " data_zakonczenia = ?, id_organizatora = ?, id_miejsca = ?, id_kategorii = ?, status = ?, zdjecie_url = ? " +
                 " where id_wydarzenia = ? and id_organizatora = ?";
 
         return jdbcTemplate.update(sql, event.getTitle(), event.getDescription(), event.getStartTime(),
                 event.getEndTime(), event.getOrganizerId(), event.getVenueId(),
-                event.getCategoryId(), event.getStatus().getNameInDB(), event.getEventId(), event.getOrganizerId());
+                event.getCategoryId(), event.getStatus().getNameInDB(), event.getImageUrl(), event.getEventId(), event.getOrganizerId());
     }
 
     public int deleteEvent(Long eventId, Long organizerId) {

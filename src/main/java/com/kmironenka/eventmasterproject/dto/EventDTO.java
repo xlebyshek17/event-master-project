@@ -10,6 +10,7 @@ public class EventDTO {
     private Long eventId;
     private String title;
     private String description;
+    private String imageUrl;
 
     private OffsetDateTime startTime;
     private OffsetDateTime endTime;

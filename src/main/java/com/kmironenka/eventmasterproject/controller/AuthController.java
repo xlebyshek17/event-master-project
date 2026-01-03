@@ -1,5 +1,6 @@
 package com.kmironenka.eventmasterproject.controller;
 
+import com.kmironenka.eventmasterproject.dto.AuthResponseDTO;
 import com.kmironenka.eventmasterproject.dto.UserDTO;
 import com.kmironenka.eventmasterproject.dto.LoginDTO;
 import com.kmironenka.eventmasterproject.dto.RegisterDTO;
@@ -26,8 +27,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO dto) {
-        UserDTO u = authService.login(dto);
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDTO dto) {
+        AuthResponseDTO u = authService.login(dto);
 
         return ResponseEntity.ok(u);
     }

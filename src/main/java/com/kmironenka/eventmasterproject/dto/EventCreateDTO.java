@@ -15,4 +15,5 @@ public class EventCreateDTO {
     private Long venueId;
     private Integer categoryId;
     private EventStatus status;
+    private String imageUrl;
 }

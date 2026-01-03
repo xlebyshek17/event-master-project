@@ -82,6 +82,7 @@ public class EventService {
         dto.setDescription(event.getDescription());
         dto.setStartTime(event.getStartTime());
         dto.setEndTime(event.getEndTime());
+        dto.setImageUrl(event.getImageUrl());
 
         dto.setOrganizerName(event.getOrganizerName());
         dto.setVenueName(event.getVenueName());
@@ -101,5 +102,6 @@ public class EventService {
         event.setVenueId(dto.getVenueId());
         event.setCategoryId(dto.getCategoryId());
         event.setStatus(dto.getStatus());
+        event.setImageUrl(dto.getImageUrl());
     }
 }
