@@ -1,5 +1,11 @@
 package com.kmironenka.eventmasterproject.dto;
 
-public class BookingDTO {
+import lombok.Data;
 
+import java.util.List;
+
+@Data
+public class BookingRequestDTO {
+    private List<TicketSelection> tickets;
 }
+

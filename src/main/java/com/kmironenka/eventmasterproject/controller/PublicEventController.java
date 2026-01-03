@@ -1,7 +1,9 @@
 package com.kmironenka.eventmasterproject.controller;
 
 import com.kmironenka.eventmasterproject.dto.EventDTO;
+import com.kmironenka.eventmasterproject.dto.TicketTypeDTO;
 import com.kmironenka.eventmasterproject.service.EventService;
+import com.kmironenka.eventmasterproject.service.TicketTypeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +16,11 @@ import java.util.List;
 @RequestMapping("/api/events")
 public class PublicEventController {
     EventService eventService;
+    TicketTypeService ticketService;
 
-    public PublicEventController(EventService eventService) {
+    public PublicEventController(EventService eventService, TicketTypeService ticketService) {
         this.eventService = eventService;
+        this.ticketService = ticketService;
     }
 
     @GetMapping
@@ -30,5 +34,9 @@ public class PublicEventController {
         return ResponseEntity.ok(e);
     }
 
-
+    @GetMapping("/{eventId}/tickets")
+    public ResponseEntity<List<TicketTypeDTO>> getTickets(@PathVariable Long eventId) {
+        List<TicketTypeDTO> tickets = ticketService.getTicketsForPublicEvent(eventId);
+        return ResponseEntity.ok(tickets);
+    }
 }

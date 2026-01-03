@@ -27,6 +27,10 @@ public class TicketTypeService {
         return ticketTypeRepo.getAllByEventId(eventId).stream().map(this::mapToDTO).toList();
     }
 
+    public List<TicketTypeDTO> getTicketsForPublicEvent(Long eventId) {
+        return ticketTypeRepo.getAllByEventId(eventId).stream().map(this::mapToDTO).toList();
+    }
+
     public void addTicketType(Long orgId, Long eventId, TicketTypeCreateDTO dto) {
         boolean isOwner = eventRepo.isEventOwner(eventId, orgId);
         if (!isOwner) {
@@ -71,6 +75,11 @@ public class TicketTypeService {
         if (affected == 0) {
             throw new IllegalArgumentException("Ticket type does not exist!");
         }
+    }
+
+    public TicketTypeDTO getTicketTypeById(Long ticketId) {
+        TicketType ticket = ticketTypeRepo.getTicketTypeById(ticketId).orElseThrow(() -> new IllegalArgumentException("Bileta nie istnieje"));
+        return mapToDTO(ticket);
     }
 
     private TicketTypeDTO mapToDTO(TicketType ticketType) {

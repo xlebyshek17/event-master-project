@@ -27,7 +27,7 @@ public class EventRepository {
                m.miasto as miasto_miejsca,
                k.nazwa AS nazwa_kategorii,
                o.nazwa_organizacji AS nazwa_organizatora,
-               (select min(t.cena) from typy_biletow t where t.id_wydarzenia = e.id_wydarzenia) as cena_od
+               (select min(t.cena) from typy_biletow t where t.id_wydarzenia = w.id_wydarzenia) as cena_od
         FROM wydarzenia w
         LEFT JOIN miejsca m ON w.id_miejsca = m.id_miejsca
         LEFT JOIN kategorie_wydarzen k ON w.id_kategorii = k.id_kategorii
@@ -105,4 +105,5 @@ public class EventRepository {
         Integer count =  jdbcTemplate.queryForObject(sql, Integer.class, eventId, organizerId);
         return count != null && count > 0;
     }
+
 }

@@ -34,6 +34,10 @@ public class UserService {
         return repo.getById(userId).map(this::mapToDTO);
     }
 
+    public Optional<Long> getIdByLogin(String login) {
+        return repo.getIdByLogin(login);
+    }
+
     private UserDTO mapToDTO(User user) {
         UserDTO dto = new UserDTO();
         dto.setId(user.getUserId());

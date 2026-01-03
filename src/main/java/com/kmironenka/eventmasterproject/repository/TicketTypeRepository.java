@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TicketTypeRepository {
@@ -47,5 +48,10 @@ public class TicketTypeRepository {
     public int deleteTicketType(Long ticketTypeId, Long eventId) {
         String sql = "delete from typy_biletow where id_typu_biletu = ? and id_wydarzenia = ?";
         return jdbcTemplate.update(sql, ticketTypeId, eventId);
+    }
+
+    public Optional<TicketType> getTicketTypeById(Long ticketTypeId) {
+        String sql = "select * from typy_biletow where id_typu_biletu = ?";
+        return jdbcTemplate.query(sql, new TicketTypeRowMapper(), ticketTypeId).stream().findFirst();
     }
 }

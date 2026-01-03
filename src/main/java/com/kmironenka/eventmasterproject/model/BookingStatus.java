@@ -1,5 +1,9 @@
 package com.kmironenka.eventmasterproject.model;
 
+import lombok.Data;
+import lombok.Getter;
+
+@Getter
 public enum BookingStatus {
     OCZEKUJACA("Oczekujaca"),
     ZATWIERDZONA("Zatwierdzona"),
@@ -9,10 +13,6 @@ public enum BookingStatus {
 
     BookingStatus(String nazwaWBaze) {
         this.nazwaWBazie = nazwaWBaze;
-    }
-
-    public String getNazwaWBazie() {
-        return nazwaWBazie;
     }
 
     public static BookingStatus fromString(String tekst) {

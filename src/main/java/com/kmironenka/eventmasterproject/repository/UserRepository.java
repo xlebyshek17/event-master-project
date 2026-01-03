@@ -2,6 +2,7 @@ package com.kmironenka.eventmasterproject.repository;
 
 import com.kmironenka.eventmasterproject.mapper.UserRowMapper;
 import com.kmironenka.eventmasterproject.model.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -40,6 +41,17 @@ public class UserRepository {
     public Optional<User> getByEmail(String email) {
         String sql = "select * from uzytkownicy where email = ?";
         return jdbcTemplate.query(sql, new UserRowMapper(), email).stream().findFirst();
+    }
+
+    public Optional<Long> getIdByLogin(String login) {
+        String sql = "SELECT id_uzytkownika from uzytkownicy where login = ?";
+
+        try {
+            Long id = jdbcTemplate.queryForObject(sql, Long.class, login);
+            return Optional.ofNullable(id);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     // Add user and Return ID
