@@ -4,13 +4,16 @@ import com.kmironenka.eventmasterproject.dto.BookingStatusUpdateDTO;
 import com.kmironenka.eventmasterproject.dto.BookingSummaryDTO;
 import com.kmironenka.eventmasterproject.dto.OrganizerProfileDTO;
 import com.kmironenka.eventmasterproject.model.Organizer;
+import com.kmironenka.eventmasterproject.model.User;
 import com.kmironenka.eventmasterproject.repository.BookingRepository;
 import com.kmironenka.eventmasterproject.repository.OrganizerRepository;
+import com.kmironenka.eventmasterproject.repository.RoleRepository;
 import com.kmironenka.eventmasterproject.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -18,13 +21,15 @@ public class OrganizerService {
     private final OrganizerRepository organizerRepo;
     private final UserRepository userRepo;
     private final BookingRepository bookingRepo;
+    private final RoleRepository roleRepository;
 
     public OrganizerService(OrganizerRepository organizerRepo,
                             UserRepository userRepo,
-                            BookingRepository bookingRepo) {
+                            BookingRepository bookingRepo, RoleRepository roleRepository) {
         this.organizerRepo = organizerRepo;
         this.userRepo = userRepo;
         this.bookingRepo = bookingRepo;
+        this.roleRepository = roleRepository;
     }
 
     public void createProfile(OrganizerProfileDTO dto, Long userId) {
@@ -84,7 +89,41 @@ public class OrganizerService {
         }
     }
 
+    @Transactional
+    public void deleteOrganizerAndDowngradeUser(Long organizerId) {
+        Long userId = organizerRepo.getUserIdByOrganizerId(organizerId).orElseThrow(() -> new IllegalArgumentException("Nie istnieje!"));
+
+        int affected = organizerRepo.deleteById(organizerId);
+        if (affected == 0) {
+            throw new IllegalArgumentException("Organizatora nie istnieje!");
+        }
+
+        if (userId != null) {
+            int oldRoleId = roleRepository.getRoleId("ORGANIZER");
+            roleRepository.deleteUserRole(userId, oldRoleId);
+            int newRoleId = roleRepository.getRoleId("USER");
+            userRepo.setRoleToUser(userId, newRoleId);
+        }
+    }
+
     public List<BookingSummaryDTO> getOrganizerBookings(Long orgId) {
         return bookingRepo.findAllByOrganizer(orgId);
+    }
+
+    public List<OrganizerProfileDTO> getAllOrganizerProfiles() {
+        List<Organizer> orgs = organizerRepo.getAll();
+        return orgs.stream().map(this::mapToDTO).toList();
+    }
+
+    private OrganizerProfileDTO mapToDTO(Organizer org) {
+        OrganizerProfileDTO dto = new OrganizerProfileDTO();
+        dto.setOrganizerId(org.getOrganizerId());
+        dto.setOrganizerName(org.getName());
+        dto.setContactEmail(org.getContactEmail());
+        dto.setDescription(org.getDescription());
+        dto.setUserLogin(org.getUserLogin());
+        dto.setUserName(org.getUserName() + " " + org.getUserSurname());
+
+        return dto;
     }
 }

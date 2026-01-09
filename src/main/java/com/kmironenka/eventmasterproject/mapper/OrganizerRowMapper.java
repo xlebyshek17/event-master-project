@@ -15,6 +15,9 @@ public class OrganizerRowMapper implements RowMapper<Organizer> {
         o.setName(rs.getString("nazwa_organizacji"));
         o.setDescription(rs.getString("opis"));
         o.setContactEmail(rs.getString("email_kontaktowy"));
+        o.setUserName(rs.getString("imie"));
+        o.setUserSurname(rs.getString("nazwisko"));
+        o.setUserLogin(rs.getString("login"));
 
         return o;
     }

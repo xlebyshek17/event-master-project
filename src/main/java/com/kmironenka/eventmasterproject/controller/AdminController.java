@@ -1,12 +1,16 @@
 package com.kmironenka.eventmasterproject.controller;
 
 import com.kmironenka.eventmasterproject.dto.EventCategoryDTO;
+import com.kmironenka.eventmasterproject.dto.OrganizerProfileDTO;
 import com.kmironenka.eventmasterproject.dto.UserDTO;
 import com.kmironenka.eventmasterproject.dto.VenueDTO;
+import com.kmironenka.eventmasterproject.model.Organizer;
 import com.kmironenka.eventmasterproject.service.EventCategoryService;
+import com.kmironenka.eventmasterproject.service.OrganizerService;
 import com.kmironenka.eventmasterproject.service.UserService;
 import com.kmironenka.eventmasterproject.service.VenueService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +22,16 @@ public class AdminController {
     private final UserService userService;
     private final EventCategoryService categoryService;
     private final VenueService venueService;
+    private final OrganizerService organizerService;
 
-    public AdminController(UserService userService, EventCategoryService categoryService, VenueService venueService) {
+    public AdminController(UserService userService,
+                           EventCategoryService categoryService,
+                           VenueService venueService,
+                           OrganizerService organizerService) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.venueService = venueService;
+        this.organizerService = organizerService;
     }
 
     @GetMapping("/users")
@@ -109,5 +118,17 @@ public class AdminController {
     public ResponseEntity<String> deleteVenue(@PathVariable Long id) {
         venueService.deleteVenue(id);
         return ResponseEntity.ok("Venue deleted successfully");
+    }
+
+    @GetMapping("/organizers")
+    public ResponseEntity<List<OrganizerProfileDTO>> getOrganizers() {
+        List<OrganizerProfileDTO> orgs = organizerService.getAllOrganizerProfiles();
+        return ResponseEntity.ok(orgs);
+    }
+
+    @DeleteMapping("/organizers/{id}")
+    public ResponseEntity<String> deleteOrganizer(@PathVariable Long id) {
+        organizerService.deleteOrganizerAndDowngradeUser(id);
+        return ResponseEntity.ok("Organizer deleted successfully");
     }
 }

@@ -66,8 +66,13 @@ public class JwtService {
     }
 
     private Key getSigningKey() {
-        // Jeśli klucz jest zwykłym tekstem, można go użyć tak, ale bezpieczniej zakodować Base64
-        // Tutaj dla uproszczenia używamy bajtów z naszego Stringa
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        // Użyj StandardCharsets.UTF_8, aby uniknąć problemów na różnych systemach
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     }
+
+//    private Key getSigningKey() {
+//        // Jeśli klucz jest zwykłym tekstem, można go użyć tak, ale bezpieczniej zakodować Base64
+//        // Tutaj dla uproszczenia używamy bajtów z naszego Stringa
+//        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+//    }
 }

@@ -83,6 +83,9 @@ public class EventService {
         dto.setStartTime(event.getStartTime());
         dto.setEndTime(event.getEndTime());
         dto.setImageUrl(event.getImageUrl());
+        dto.setVenueId(event.getVenueId());
+        dto.setCategoryId(event.getCategoryId());
+
 
         dto.setOrganizerName(event.getOrganizerName());
         dto.setVenueName(event.getVenueName());

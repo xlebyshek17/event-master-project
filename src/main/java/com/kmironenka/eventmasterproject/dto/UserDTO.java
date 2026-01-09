@@ -2,6 +2,8 @@ package com.kmironenka.eventmasterproject.dto;
 
 import lombok.Data;
 
+import java.time.OffsetDateTime;
+
 @Data
 public class UserDTO {
     private Long id;
@@ -10,4 +12,5 @@ public class UserDTO {
     private String name;
     private String surname;
     private String role;
+    private OffsetDateTime createdAt;
 }

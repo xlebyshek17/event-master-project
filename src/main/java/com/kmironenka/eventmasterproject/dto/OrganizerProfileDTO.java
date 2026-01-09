@@ -8,4 +8,6 @@ public class OrganizerProfileDTO {
     private String organizerName;
     private String description;
     private String contactEmail;
+    private String userName;
+    private String userLogin;
 }

@@ -9,4 +9,7 @@ public class Organizer {
     private String name;
     private String description;
     private String contactEmail;
+    private String userName;
+    private String userSurname;
+    private String userLogin;
 }

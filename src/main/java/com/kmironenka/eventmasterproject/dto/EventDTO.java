@@ -15,6 +15,9 @@ public class EventDTO {
     private OffsetDateTime startTime;
     private OffsetDateTime endTime;
 
+    private Long venueId;
+    private Integer categoryId;
+
     private String venueName;
     private String city;
 

@@ -22,4 +22,9 @@ public class RoleRepository {
         String sql = "select nazwa_roli from role";
         return jdbcTemplate.queryForList(sql, String.class);
     }
+
+    public int deleteUserRole(Long userId, int roleId) {
+        String sql = "delete from uzytkownicy_role where id_uzytkownika = ? and id_roli = ?";
+        return jdbcTemplate.update(sql, userId, roleId);
+    }
 }

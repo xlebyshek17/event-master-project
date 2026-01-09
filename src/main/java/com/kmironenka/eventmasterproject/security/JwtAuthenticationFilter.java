@@ -49,7 +49,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             userLogin = jwtService.extractUsername(jwt);
         } catch (Exception e) {
-            // Jeśli token jest uszkodzony/przeterminowany, po prostu idziemy dalej bez logowania (Security zwróci 403)
+            // DODAJ TĘ LINIĘ, aby zobaczyć błąd w konsoli IntelliJ
+            System.out.println("BŁĄD JWT: " + e.getMessage());
             filterChain.doFilter(request, response);
             return;
         }

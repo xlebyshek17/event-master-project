@@ -46,6 +46,7 @@ public class UserService {
         dto.setName(user.getName());
         dto.setSurname(user.getSurname());
         dto.setRole(repo.getUserRoleName(user.getUserId()));
+        dto.setCreatedAt(user.getCreatedAt());
         return dto;
     }
 }
