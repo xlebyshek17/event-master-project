@@ -19,6 +19,7 @@ public class Event {
 
     private String venueName;
     private String city;
+    private String address;
     private String categoryName;
     private String organizerName;
     private Double minPrice;

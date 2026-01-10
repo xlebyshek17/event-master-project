@@ -25,6 +25,7 @@ public class EventRepository {
         SELECT w.*,
                m.nazwa AS nazwa_miejsca,
                m.miasto as miasto_miejsca,
+               m.adres as adres,
                k.nazwa AS nazwa_kategorii,
                o.nazwa_organizacji AS nazwa_organizatora,
                (select min(t.cena) from typy_biletow t where t.id_wydarzenia = w.id_wydarzenia) as cena_od

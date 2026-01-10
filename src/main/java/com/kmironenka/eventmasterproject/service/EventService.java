@@ -26,6 +26,10 @@ public class EventService {
     }
 
     public void addEvent(EventCreateDTO dto, Long organizerId) {
+        if (dto.getStartTime().isBefore(java.time.OffsetDateTime.now())) {
+            throw new IllegalArgumentException("Data rozpoczęcia nie może być w przeszłości.");
+        }
+
         if (eventRepo.existsByDetails(dto.getTitle(), dto.getVenueId(), dto.getStartTime())) {
             throw new IllegalArgumentException("Event already exists");
         }
@@ -33,12 +37,16 @@ public class EventService {
         Event event = new Event();
         mapFromDTO(dto, event);
         event.setOrganizerId(organizerId);
-        event.setStatus(EventStatus.OPUBLIKOWANE);
+        event.setStatus(EventStatus.SZKIC);
 
         eventRepo.addEvent(event);
     }
 
     public void updateEvent(Long eventId, EventCreateDTO dto, Long organizerId) {
+        if (dto.getStartTime().isBefore(java.time.OffsetDateTime.now())) {
+            throw new IllegalArgumentException("Nie można zmienić daty rozpoczęcia na termin z przeszłości.");
+        }
+
         Event event = new Event();
         mapFromDTO(dto, event);
 
@@ -92,6 +100,7 @@ public class EventService {
         dto.setCategoryName(event.getCategoryName());
         dto.setStatus(event.getStatus());
         dto.setCity(event.getCity());
+        dto.setAddress(event.getAddress());
         dto.setMinPrice(event.getMinPrice());
 
         return dto;

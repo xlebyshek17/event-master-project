@@ -20,6 +20,7 @@ public class EventDTO {
 
     private String venueName;
     private String city;
+    private String address;
 
     private String organizerName;
     private String categoryName;
