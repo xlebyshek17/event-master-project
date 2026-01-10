@@ -67,6 +67,12 @@ public class OrganizerService {
         }
     }
 
+    public OrganizerProfileDTO getProfile(Long orgId) {
+        Organizer org = organizerRepo.getById(orgId)
+                .orElseThrow(() -> new IllegalArgumentException("Profil organizatora nie istnieje!"));
+        return mapToDTO(org);
+    }
+
     public boolean isProfileExists(Long userId) {
         return organizerRepo.getOrganizerIdByUserId(userId).isPresent();
     }

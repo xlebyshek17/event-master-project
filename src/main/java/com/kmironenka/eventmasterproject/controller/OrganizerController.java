@@ -64,6 +64,13 @@ public class OrganizerController {
         return ResponseEntity.ok(exists);
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<OrganizerProfileDTO> getProfile(Authentication auth) {
+        Long orgId = getLoggedUserId(auth);
+        OrganizerProfileDTO profile = organizerService.getProfile(orgId);
+        return ResponseEntity.ok(profile);
+    }
+
     @GetMapping("/events")
     public ResponseEntity<List<EventDTO>> getAllEvents(Authentication auth) {
         Long orgId = getLoggedOrganizerId(auth);
