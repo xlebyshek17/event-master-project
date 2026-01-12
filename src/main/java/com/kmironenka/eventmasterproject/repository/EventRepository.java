@@ -108,4 +108,13 @@ public class EventRepository {
         return count != null && count > 0;
     }
 
+    public List<Event> getSimilarEvents(Long eventId, int categoryId) {
+        String sql = SELECT_WITH_JOINS +
+                     " where w.id_wydarzenia != ? and " +
+                     "      w.id_kategorii = ? and " +
+                     "      w.status = 'Opublikowane' " +
+                     "limit 6";
+        return jdbcTemplate.query(sql, new EventRowMapper(), eventId, categoryId);
+    }
+
 }

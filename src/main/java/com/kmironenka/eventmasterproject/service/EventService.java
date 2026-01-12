@@ -83,6 +83,11 @@ public class EventService {
         return mapToDTO(event);
     }
 
+    public List<EventDTO> getSimilarEvents(Long eventId, int categoryId) {
+        return eventRepo.getSimilarEvents(eventId, categoryId).stream().map(this::mapToDTO).toList();
+    }
+
+
     private EventDTO mapToDTO(Event event) {
         EventDTO dto = new EventDTO();
         dto.setEventId(event.getEventId());

@@ -5,10 +5,7 @@ import com.kmironenka.eventmasterproject.dto.TicketTypeDTO;
 import com.kmironenka.eventmasterproject.service.EventService;
 import com.kmironenka.eventmasterproject.service.TicketTypeService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,5 +35,11 @@ public class PublicEventController {
     public ResponseEntity<List<TicketTypeDTO>> getTickets(@PathVariable Long eventId) {
         List<TicketTypeDTO> tickets = ticketService.getTicketsForPublicEvent(eventId);
         return ResponseEntity.ok(tickets);
+    }
+
+    @GetMapping("/{eventId}/similar")
+    public ResponseEntity<List<EventDTO>> getSimilarEvents(@PathVariable Long eventId, @RequestParam int categoryId) {
+        List<EventDTO> similarEvents = eventService.getSimilarEvents(eventId, categoryId);
+        return ResponseEntity.ok(similarEvents);
     }
 }
