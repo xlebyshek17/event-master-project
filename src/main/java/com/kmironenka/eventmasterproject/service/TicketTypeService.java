@@ -77,6 +77,18 @@ public class TicketTypeService {
         }
     }
 
+    public void updateTicketVisibility(Long orgId, Long eventId, Long ticketId, boolean hidden) {
+        boolean isOwner = eventRepo.isEventOwner(eventId, orgId);
+        if (!isOwner) {
+            throw new IllegalArgumentException("Event with id " + eventId + " does not belong to organizer " + orgId);
+        }
+
+        int affected = ticketTypeRepo.updateTicketVisibility(eventId, ticketId, hidden);
+        if (affected == 0) {
+            throw new IllegalArgumentException("Bilet nie istnieje!");
+        }
+    }
+
     public TicketTypeDTO getTicketTypeById(Long ticketId) {
         TicketType ticket = ticketTypeRepo.getTicketTypeById(ticketId).orElseThrow(() -> new IllegalArgumentException("Bileta nie istnieje"));
         return mapToDTO(ticket);
@@ -90,6 +102,7 @@ public class TicketTypeService {
         dto.setPrice(ticketType.getPrice());
         dto.setTotalQuantity(ticketType.getTotalQuantity());
         dto.setAvailableQuantity(ticketType.getAvailableQuantity());
+        dto.setIsHidden(ticketType.getIsHidden());
 
         return dto;
     }

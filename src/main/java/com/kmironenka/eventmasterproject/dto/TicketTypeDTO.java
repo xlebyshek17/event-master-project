@@ -10,4 +10,5 @@ public class TicketTypeDTO {
     private Double price;
     private Integer totalQuantity;
     private Integer availableQuantity;
+    private Boolean isHidden;
 }

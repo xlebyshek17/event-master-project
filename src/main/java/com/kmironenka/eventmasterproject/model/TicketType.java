@@ -10,6 +10,7 @@ public class TicketType {
     private Double price;
     private Integer totalQuantity;
     private Integer availableQuantity;
+    private Boolean isHidden;
 
     private String eventTitle;
 }

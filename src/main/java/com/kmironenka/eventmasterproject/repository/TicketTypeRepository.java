@@ -54,4 +54,9 @@ public class TicketTypeRepository {
         String sql = "select * from typy_biletow where id_typu_biletu = ?";
         return jdbcTemplate.query(sql, new TicketTypeRowMapper(), ticketTypeId).stream().findFirst();
     }
+
+    public int updateTicketVisibility(Long eventId, Long ticketTypeId, boolean visible) {
+        String sql = "UPDATE typy_biletow SET czy_ukryty = ? WHERE id_typu_biletu = ? and id_wydarzenia = ?";
+        return jdbcTemplate.update(sql,  visible, ticketTypeId, eventId);
+    }
 }
