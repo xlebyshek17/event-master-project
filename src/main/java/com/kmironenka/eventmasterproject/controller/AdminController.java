@@ -4,17 +4,14 @@ import com.kmironenka.eventmasterproject.dto.EventCategoryDTO;
 import com.kmironenka.eventmasterproject.dto.OrganizerProfileDTO;
 import com.kmironenka.eventmasterproject.dto.UserDTO;
 import com.kmironenka.eventmasterproject.dto.VenueDTO;
-import com.kmironenka.eventmasterproject.model.Organizer;
 import com.kmironenka.eventmasterproject.service.EventCategoryService;
 import com.kmironenka.eventmasterproject.service.OrganizerService;
 import com.kmironenka.eventmasterproject.service.UserService;
 import com.kmironenka.eventmasterproject.service.VenueService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admin")

@@ -1,7 +1,6 @@
 package com.kmironenka.eventmasterproject.mapper;
 
 import com.kmironenka.eventmasterproject.dto.BookingItemDetailsDTO;
-import com.kmironenka.eventmasterproject.model.BookingItem;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 
