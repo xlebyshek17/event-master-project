@@ -1,9 +1,6 @@
 package com.kmironenka.eventmasterproject.service;
 
-import com.kmironenka.eventmasterproject.dto.BookingRequestDTO;
-import com.kmironenka.eventmasterproject.dto.BookingSummaryDTO;
-import com.kmironenka.eventmasterproject.dto.TicketSelection;
-import com.kmironenka.eventmasterproject.dto.TicketTypeDTO;
+import com.kmironenka.eventmasterproject.dto.*;
 import com.kmironenka.eventmasterproject.model.Booking;
 import com.kmironenka.eventmasterproject.model.BookingItem;
 import com.kmironenka.eventmasterproject.model.BookingStatus;
@@ -64,5 +61,9 @@ public class BookingService {
 
     public List<BookingSummaryDTO> getUserBookings(Long userId) {
         return bookingRepo.findAllByUser(userId);
+    }
+
+    public List<BookingItemDetailsDTO> getBookingItemDetails(Long userId, Long bookingId) {
+        return bookingRepo.getBookingItemDetailsForUser(userId, bookingId);
     }
 }

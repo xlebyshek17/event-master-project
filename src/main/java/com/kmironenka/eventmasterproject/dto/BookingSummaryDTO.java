@@ -13,5 +13,6 @@ public class BookingSummaryDTO {
     private Double totalAmount;
 
     private String eventTitle; // Kluczowe: Na co to bilet?
-    private String userLogin;  // Kluczowe dla Organizatora: Kto kupił?
+    private String userName;  // Kluczowe dla Organizatora: Kto kupił?
+    private String userSurname;
 }

@@ -13,7 +13,7 @@ public class BookingSummaryRowMapper implements RowMapper<BookingSummaryDTO> {
     @Override
     public BookingSummaryDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
         BookingSummaryDTO booking =  new BookingSummaryDTO();
-        booking.setBookingId(rs.getLong("booking_id"));
+        booking.setBookingId(rs.getLong("id_rezerwacji"));
         booking.setBookingDate(rs.getObject("data_utworzenia", OffsetDateTime.class));
 
         String status = rs.getString("status");
@@ -23,7 +23,8 @@ public class BookingSummaryRowMapper implements RowMapper<BookingSummaryDTO> {
         }
 
         booking.setTotalAmount(rs.getDouble("kwota_calkowita"));
-        booking.setUserLogin(rs.getString("login_uzytkownika"));
+        booking.setUserName(rs.getString("imie_uzytkownika"));
+        booking.setUserSurname(rs.getString("nazwisko_uzytkownika"));
         booking.setEventTitle(rs.getString("tytul_wydarzenia"));
 
         return booking;
