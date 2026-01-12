@@ -1,10 +1,10 @@
 package com.kmironenka.eventmasterproject.service;
 
+import com.kmironenka.eventmasterproject.dto.BookingItemDetailsDTO;
 import com.kmironenka.eventmasterproject.dto.BookingStatusUpdateDTO;
 import com.kmironenka.eventmasterproject.dto.BookingSummaryDTO;
 import com.kmironenka.eventmasterproject.dto.OrganizerProfileDTO;
 import com.kmironenka.eventmasterproject.model.Organizer;
-import com.kmironenka.eventmasterproject.model.User;
 import com.kmironenka.eventmasterproject.repository.BookingRepository;
 import com.kmironenka.eventmasterproject.repository.OrganizerRepository;
 import com.kmironenka.eventmasterproject.repository.RoleRepository;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -83,7 +82,7 @@ public class OrganizerService {
 
     @Transactional
     public void updateBookingStatus(Long bookingId, Long orgId, BookingStatusUpdateDTO status) {
-        boolean isOwner = bookingRepo.isBookingRelatedToOrganizator(orgId, bookingId);
+        boolean isOwner = bookingRepo.isBookingRelatedToOrganizator(bookingId, orgId);
         if (!isOwner) {
             throw new IllegalArgumentException("Nie masz uprawnień do zarządzania tą rezerwacją!");
         }
@@ -116,9 +115,28 @@ public class OrganizerService {
         return bookingRepo.findAllByOrganizer(orgId);
     }
 
+    public List<BookingItemDetailsDTO> getBookingItemDetails(Long orgId, Long bookingId) {
+        return bookingRepo.getBookingItemDetailsForOrganizers(orgId, bookingId);
+    }
+
     public List<OrganizerProfileDTO> getAllOrganizerProfiles() {
         List<Organizer> orgs = organizerRepo.getAll();
         return orgs.stream().map(this::mapToDTO).toList();
+    }
+
+    @Transactional
+    public void updateOrganizerStatus(Long orgId, boolean status) {
+        int affected = organizerRepo.updateOrganizerStatus(orgId, status);
+
+        System.out.println("status: "+ status);
+
+        if (affected == 0) {
+            throw new IllegalArgumentException("Profil organizatora nie istnieje!");
+        }
+
+        if (!status) {
+            organizerRepo.cancelEvent(orgId);
+        }
     }
 
     private OrganizerProfileDTO mapToDTO(Organizer org) {
@@ -129,6 +147,7 @@ public class OrganizerService {
         dto.setDescription(org.getDescription());
         dto.setUserLogin(org.getUserLogin());
         dto.setUserName(org.getUserName() + " " + org.getUserSurname());
+        dto.setIsActive(org.getIsActive());
 
         return dto;
     }

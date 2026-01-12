@@ -48,13 +48,6 @@ public class AdminController {
         return ResponseEntity.ok("User deleted successfully with id " + id);
     }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
-        Optional<UserDTO> u = userService.getUserById(id);
-
-        return u.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
     @GetMapping("/event-categories")
     public ResponseEntity<List<EventCategoryDTO>> getEventCategories() {
         List<EventCategoryDTO> categories = categoryService.getAllCategories();
@@ -83,13 +76,6 @@ public class AdminController {
         return ResponseEntity.ok("Category deleted successfully");
     }
 
-    @GetMapping("/event-categories/{id}")
-    public ResponseEntity<EventCategoryDTO> getEventCategory(@PathVariable Integer id) {
-        Optional<EventCategoryDTO> categoryDTO = categoryService.getById(id);
-
-        return categoryDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
     @GetMapping("/venues")
     public ResponseEntity<List<VenueDTO>> getVenues() {
         List<VenueDTO> venues = venueService.getAllVenues();
@@ -100,12 +86,6 @@ public class AdminController {
     public ResponseEntity<String> addVenue(@RequestBody VenueDTO venueDTO) {
         venueService.addVenue(venueDTO);
         return ResponseEntity.ok("Venue added successfully");
-    }
-
-    @GetMapping("/venues/{id}")
-    public ResponseEntity<VenueDTO> getVenue(@PathVariable Long id) {
-        Optional<VenueDTO> venueDTO = venueService.getById(id);
-        return venueDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/venues/{id}")
@@ -126,9 +106,16 @@ public class AdminController {
         return ResponseEntity.ok(orgs);
     }
 
+
     @DeleteMapping("/organizers/{id}")
     public ResponseEntity<String> deleteOrganizer(@PathVariable Long id) {
         organizerService.deleteOrganizerAndDowngradeUser(id);
         return ResponseEntity.ok("Organizer deleted successfully");
+    }
+
+    @PatchMapping("/organizers/{id}")
+    public ResponseEntity<String> updateOrganizerStatus(@PathVariable Long id, @RequestBody boolean status) {
+        organizerService.updateOrganizerStatus(id, status);
+        return  ResponseEntity.ok("Status zaktualizowany");
     }
 }

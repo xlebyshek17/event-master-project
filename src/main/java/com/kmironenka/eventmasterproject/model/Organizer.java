@@ -12,4 +12,5 @@ public class Organizer {
     private String userName;
     private String userSurname;
     private String userLogin;
+    private Boolean isActive;
 }

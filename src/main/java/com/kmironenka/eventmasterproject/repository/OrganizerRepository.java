@@ -48,7 +48,9 @@ public class OrganizerRepository {
     }
 
     public Optional<Organizer> getById(Long organizerId) {
-        String sql = "select * from organizatorzy where id_organizatora = ?";
+        String sql = "select *, u.imie as imie, u.nazwisko as nazwisko, u.login as login" +
+                     " from organizatorzy o join uzytkownicy u " +
+                     "on o.id_uzytkownika = u.id_uzytkownika where id_organizatora = ?";
         return jdbcTemplate.query(sql, new OrganizerRowMapper(), organizerId).stream().findFirst();
     }
 
@@ -61,5 +63,15 @@ public class OrganizerRepository {
     public int deleteById(Long organizerId) {
         String sql = "delete from organizatorzy where id_organizatora = ?";
         return jdbcTemplate.update(sql, organizerId);
+    }
+
+    public int updateOrganizerStatus(Long organizerId, boolean status) {
+        String sqlOrg = "UPDATE organizatorzy SET czy_aktywny = ? WHERE id_organizatora = ?";
+        return jdbcTemplate.update(sqlOrg, status, organizerId);
+    }
+
+    public void cancelEvent(Long organizerId) {
+        String sqlEvents = "UPDATE wydarzenia SET status = 'Anulowane' WHERE id_organizatora = ?";
+        jdbcTemplate.update(sqlEvents, organizerId);
     }
 }

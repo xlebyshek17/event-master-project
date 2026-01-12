@@ -66,7 +66,7 @@ public class OrganizerController {
 
     @GetMapping("/profile")
     public ResponseEntity<OrganizerProfileDTO> getProfile(Authentication auth) {
-        Long orgId = getLoggedUserId(auth);
+        Long orgId = getLoggedOrganizerId(auth);
         OrganizerProfileDTO profile = organizerService.getProfile(orgId);
         return ResponseEntity.ok(profile);
     }
@@ -152,6 +152,17 @@ public class OrganizerController {
         return ResponseEntity.ok("Ticket deleted!");
     }
 
+    @PatchMapping("/events/{eventId}/tickets/{ticketId}")
+    public ResponseEntity<String> updateTicketStatus(
+            Authentication auth,
+            @PathVariable Long eventId,
+            @PathVariable Long ticketId,
+            @RequestBody boolean hidden) {
+        Long  orgId = getLoggedOrganizerId(auth);
+        ticketTypeService.updateTicketVisibility(orgId, eventId, ticketId, hidden);
+        return ResponseEntity.ok("Widoczność biletu została zmieniona");
+    }
+
     @PatchMapping("/bookings/{bookingId}")
     public ResponseEntity<String> updateBookingStatus(Authentication auth,
                                                       @PathVariable Long bookingId,
@@ -165,5 +176,12 @@ public class OrganizerController {
     public ResponseEntity<List<BookingSummaryDTO>> getAllBookings(Authentication auth) {
         Long orgId = getLoggedOrganizerId(auth);
         return ResponseEntity.ok(organizerService.getOrganizerBookings(orgId));
+    }
+
+    @GetMapping("/bookings/{bookingId}")
+    public ResponseEntity<List<BookingItemDetailsDTO>> getBookingItemDetails(Authentication auth, @PathVariable Long bookingId) {
+        Long orgId = getLoggedOrganizerId(auth);
+
+        return ResponseEntity.ok(organizerService.getBookingItemDetails(orgId, bookingId));
     }
 }

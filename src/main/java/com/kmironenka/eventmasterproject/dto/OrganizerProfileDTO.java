@@ -10,4 +10,5 @@ public class OrganizerProfileDTO {
     private String contactEmail;
     private String userName;
     private String userLogin;
+    private Boolean isActive;
 }

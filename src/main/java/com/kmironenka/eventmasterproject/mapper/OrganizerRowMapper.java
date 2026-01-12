@@ -18,6 +18,7 @@ public class OrganizerRowMapper implements RowMapper<Organizer> {
         o.setUserName(rs.getString("imie"));
         o.setUserSurname(rs.getString("nazwisko"));
         o.setUserLogin(rs.getString("login"));
+        o.setIsActive(rs.getBoolean("czy_aktywny"));
 
         return o;
     }
