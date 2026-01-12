@@ -3,6 +3,7 @@ package com.kmironenka.eventmasterproject.service;
 import com.kmironenka.eventmasterproject.dto.UserDTO;
 import com.kmironenka.eventmasterproject.model.User;
 import com.kmironenka.eventmasterproject.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,11 +32,31 @@ public class UserService {
     }
 
     public Optional<UserDTO> getUserById(Long userId) {
+
         return repo.getById(userId).map(this::mapToDTO);
     }
 
     public Optional<Long> getIdByLogin(String login) {
+
         return repo.getIdByLogin(login);
+    }
+
+    public void updateUser(Long userId, UserDTO dto) {
+        User u = repo.getById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Użytkownik nie istnieje!"));
+
+        // Aktualizacja podstawowych danych
+        u.setName(dto.getName());
+        u.setSurname(dto.getSurname());
+        u.setEmail(dto.getEmail());
+
+        if (dto.getNewPassword() != null && !dto.getNewPassword().isEmpty()) {
+            String salt = BCrypt.gensalt(12);
+            u.setPasswordHash(BCrypt.hashpw(dto.getNewPassword(), salt));
+            System.out.println();
+        }
+
+        repo.updateUser(u);
     }
 
     private UserDTO mapToDTO(User user) {

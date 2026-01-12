@@ -35,10 +35,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/events/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/events/*/tickets/*").hasRole("ORGANIZER")
 
+                        .requestMatchers(HttpMethod.GET, "/api/admin/event-categories", "/api/admin/event-categories/**").permitAll()
                         // POPRAWKA: Dodajemy ścieżki bez i z /**, aby złapać wszystko
                         .requestMatchers(HttpMethod.GET, "/api/admin/venues", "/api/admin/venues/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ORGANIZER")
-                        .requestMatchers(HttpMethod.GET, "/api/admin/event-categories", "/api/admin/event-categories/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ORGANIZER")
+                        //.requestMatchers(HttpMethod.GET, "/api/admin/event-categories", "/api/admin/event-categories/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ORGANIZER")
 
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
 

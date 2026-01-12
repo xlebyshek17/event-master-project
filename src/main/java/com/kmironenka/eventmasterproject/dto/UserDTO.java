@@ -13,4 +13,5 @@ public class UserDTO {
     private String surname;
     private String role;
     private OffsetDateTime createdAt;
+    private String newPassword;
 }
