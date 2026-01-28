@@ -21,28 +21,15 @@ public class EventRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private final String SELECT_WITH_JOINS = """
-        SELECT w.*,
-               m.nazwa AS nazwa_miejsca,
-               m.miasto as miasto_miejsca,
-               m.adres as adres,
-               k.nazwa AS nazwa_kategorii,
-               o.nazwa_organizacji AS nazwa_organizatora,
-               (select min(t.cena) from typy_biletow t where t.id_wydarzenia = w.id_wydarzenia and t.czy_ukryty != true) as cena_od
-        FROM wydarzenia w
-        LEFT JOIN miejsca m ON w.id_miejsca = m.id_miejsca
-        LEFT JOIN kategorie_wydarzen k ON w.id_kategorii = k.id_kategorii
-        LEFT JOIN organizatorzy o ON w.id_organizatora = o.id_organizatora
-    """;
+    private final String SELECT_FROM_VIEW = "select * from v_public_events";
 
     public List<Event> getAll(Long orgId) {
-        String sql = SELECT_WITH_JOINS + " where w.id_organizatora = ?";
+        String sql = SELECT_FROM_VIEW + " where id_organizatora = ?";
         return jdbcTemplate.query(sql, new EventRowMapper(), orgId);
     }
 
-    // razie bez filtr and sort
     public List<Event> getPublishedEvents() {
-        String sql = SELECT_WITH_JOINS + " where w.status = 'Opublikowane'";
+        String sql = SELECT_FROM_VIEW + " where status = 'Opublikowane'";
         return jdbcTemplate.query(sql, new EventRowMapper());
     }
 
@@ -86,12 +73,12 @@ public class EventRepository {
     }
 
     public Optional<Event> getEventById(Long eventId) {
-        String sql = SELECT_WITH_JOINS + " where id_wydarzenia = ?";
+        String sql = SELECT_FROM_VIEW + " where id_wydarzenia = ?";
         return jdbcTemplate.query(sql, new EventRowMapper(), eventId).stream().findFirst();
     }
 
     public Optional<Event> getPublishedEventById(Long eventId) {
-        String sql = SELECT_WITH_JOINS + " where w.id_wydarzenia = ? and w.status = 'Opublikowane'";
+        String sql = SELECT_FROM_VIEW + " where id_wydarzenia = ? and status = 'Opublikowane'";
         return jdbcTemplate.query(sql, new EventRowMapper(), eventId).stream().findFirst();
     }
 
@@ -109,10 +96,10 @@ public class EventRepository {
     }
 
     public List<Event> getSimilarEvents(Long eventId, int categoryId) {
-        String sql = SELECT_WITH_JOINS +
-                     " where w.id_wydarzenia != ? and " +
-                     "      w.id_kategorii = ? and " +
-                     "      w.status = 'Opublikowane' " +
+        String sql = SELECT_FROM_VIEW +
+                     " where id_wydarzenia != ? and " +
+                     "      id_kategorii = ? and " +
+                     "      status = 'Opublikowane' " +
                      "limit 6";
         return jdbcTemplate.query(sql, new EventRowMapper(), eventId, categoryId);
     }

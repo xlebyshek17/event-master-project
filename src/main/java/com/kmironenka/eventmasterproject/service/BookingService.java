@@ -30,9 +30,9 @@ public class BookingService {
         for (TicketSelection item : booking.getTickets()) {
             TicketTypeDTO ticket = ticketService.getTicketTypeById(item.getTicketTypeId());
 
-            if (ticket.getAvailableQuantity() < item.getQuantity()) {
-                throw new IllegalArgumentException("Zbyt mało biletów dla: " + ticket.getName());
-            }
+//            if (ticket.getAvailableQuantity() < item.getQuantity()) {
+//                throw new IllegalArgumentException("Zbyt mało biletów dla: " + ticket.getName());
+//            }
 
             BookingItem bookingItem = new BookingItem();
             bookingItem.setTicketTypeId(item.getTicketTypeId());
@@ -40,14 +40,14 @@ public class BookingService {
             bookingItem.setPriceAtPurchase(ticket.getPrice());
             items.add(bookingItem);
 
-            totalAmount += (ticket.getPrice() * item.getQuantity());
+            //totalAmount += (ticket.getPrice() * item.getQuantity());
         }
 
         Booking bookingToAdd = new Booking();
         bookingToAdd.setUserId(userId);
         bookingToAdd.setStatus(BookingStatus.OCZEKUJACA);
         bookingToAdd.setCreatedAt(OffsetDateTime.now());
-        bookingToAdd.setTotalAmount(totalAmount);
+        bookingToAdd.setTotalAmount(0.0);
 
         Long bookingId = bookingRepo.addBooking(bookingToAdd);
 
@@ -65,5 +65,13 @@ public class BookingService {
 
     public List<BookingItemDetailsDTO> getBookingItemDetails(Long userId, Long bookingId) {
         return bookingRepo.getBookingItemDetailsForUser(userId, bookingId);
+    }
+
+    public List<SalesReportDTO> getSalesReport(Long orgId) {
+        return  bookingRepo.getSalesReport(orgId);
+    }
+
+    public List<ParticipantDTO> getParticipants(Long eventId) {
+        return bookingRepo.getParticipants(eventId);
     }
 }

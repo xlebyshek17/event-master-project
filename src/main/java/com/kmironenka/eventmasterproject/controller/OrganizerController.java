@@ -1,10 +1,7 @@
 package com.kmironenka.eventmasterproject.controller;
 
 import com.kmironenka.eventmasterproject.dto.*;
-import com.kmironenka.eventmasterproject.service.EventService;
-import com.kmironenka.eventmasterproject.service.OrganizerService;
-import com.kmironenka.eventmasterproject.service.TicketTypeService;
-import com.kmironenka.eventmasterproject.service.UserService;
+import com.kmironenka.eventmasterproject.service.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +15,18 @@ public class OrganizerController {
     private final EventService eventService;
     private final TicketTypeService ticketTypeService;
     private final UserService userService;
+    private final BookingService bookingService;
 
-    public OrganizerController(OrganizerService organizerService, EventService eventService, TicketTypeService ticketTypeService, UserService userService) {
+    public OrganizerController(OrganizerService organizerService,
+                               EventService eventService,
+                               TicketTypeService ticketTypeService,
+                               UserService userService,
+                               BookingService bookingService) {
         this.organizerService = organizerService;
         this.eventService = eventService;
         this.ticketTypeService = ticketTypeService;
         this.userService = userService;
+        this.bookingService = bookingService;
     }
 
     private Long getLoggedUserId(Authentication auth) {
@@ -183,5 +186,17 @@ public class OrganizerController {
         Long orgId = getLoggedOrganizerId(auth);
 
         return ResponseEntity.ok(organizerService.getBookingItemDetails(orgId, bookingId));
+    }
+
+    @GetMapping("/bookings/sales")
+    public ResponseEntity<List<SalesReportDTO>> getSalesReport(Authentication auth) {
+        Long orgId = getLoggedOrganizerId(auth);
+
+        return ResponseEntity.ok(bookingService.getSalesReport(orgId));
+    }
+
+    @GetMapping("/events/{eventId}/participants")
+    public ResponseEntity<List<ParticipantDTO>> getParticipants(@PathVariable Long eventId) {
+        return ResponseEntity.ok(bookingService.getParticipants(eventId));
     }
 }
